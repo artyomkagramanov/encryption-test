@@ -23,6 +23,20 @@ const Player = (props) => {
             player.hlsQualitySelector({
                 displayCurrentQuality: true,
             });
+            player.on("loadstart", function (e) {
+                player.tech().hls.xhr.beforeRequest = function(options) {
+                    console.log(options)
+                    // required for detecting only the key requests
+                    if(options.uri.includes('key://key.key')) {
+                        console.log('changed')
+                        options.uri = 'https://adultmembersites.com/api/encoding'
+                    }
+                    // if (!options.uri.startsWith(keyPrefix)) { return; }
+                    // options.headers = options.headers || {};
+                    // optopns.headers["Custom-Header"] = "value";
+                    // options.uri = urlTpl.replace("{key}", options.uri.substring(keyPrefix.length));
+                };
+            });
 
             // You could update an existing player in the `else` block here
             // on prop change, for example:
